@@ -1,14 +1,7 @@
 FROM golang:alpine
-
-RUN apk --no-cache add ca-certificates git
-
-WORKDIR /app
-
+LABEL maintainer="Dmitry Rodin<madiedinro@gmail.com>"
+RUN apk --no-cache add git
 ADD . .
-RUN go get github.com/gin-gonic/gin
-RUN go build -v
-
-EXPOSE 8080
-
-CMD ["/app/app"]
+RUN go get github.com/gin-gonic/gin && go build -v
+ENTRYPOINT ["/root/app"]
 
