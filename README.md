@@ -22,7 +22,7 @@ Simple but very helpfull necessary service provides common information about HTT
 ```
 
 
-## Running
+## Running on host machine
 
 build
 
@@ -30,9 +30,22 @@ build
 go get github.com/madiedinro/http_debug
 ```
 
-and start
+then start
 
 ```
 http_debug -listen=:19992
 ```
 
+## Using docker Building docker image
+
+run at host network
+```
+docker run --rm -d --name httpdebug --network=host madiedinro/http_debug --listen=172.16.25.1:19992
+```
+
+to build image or no to build image
+
+```
+docker build -t madiedinro/http_debug .
+docker push madiedinro/http_debug
+```
