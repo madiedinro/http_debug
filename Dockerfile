@@ -1,9 +1,19 @@
-FROM golang:alpine
-LABEL maintainer="Dmitry Rodin<madiedinro@gmail.com>"
-RUN apk --no-cache add git && mkdir -p /httpdebug
-WORKDIR /httpdebug
-ENV GIN_MODE=release
-ADD . .
-RUN go get github.com/gin-gonic/gin && go build -v
-ENTRYPOINT ["/httpdebug/httpdebug"]
+FROM golang:alpine  as builder
+LABEL maintainer="Dmitry Rodin <madiedinro@gmail.com>"
 
+WORKDIR /go/src/github.com/madiedinro/http_debug
+ENV GOPATH=/go
+
+COPY . .
+
+RUN go build -ldflags '-extldflags "-static"' github.com/madiedinro/http_debug
+
+FROM alpine:latest
+
+RUN apk --no-cache add ca-certificates
+WORKDIR /
+COPY --from=builder /go/src/github.com/madiedinro/http_debug/http_debug /usr/bin/http_debug
+
+ENV GIN_MODE=release
+
+CMD ["http_debug"]

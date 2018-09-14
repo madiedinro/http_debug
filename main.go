@@ -4,18 +4,26 @@ import (
 	"flag"
 	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
 )
 
-var (
-	listen = flag.String("listen", ":19991", "Listen. Default :19991")
-)
+func getEnv(env string, def string) string {
+	envVal := os.Getenv(env)
+	if envVal != "" {
+		return envVal
+	}
+	return def
+}
 
 func main() {
 	flag.Parse()
-	fmt.Printf("Starting http server on %s\n", *listen)
 	gin.SetMode(gin.ReleaseMode)
+
+	listen := getEnv("PORT", "8080")
+
+	fmt.Printf("Starting http server on %s\n", listen)
 
 	router := gin.Default()
 	router.GET("/*any", func(c *gin.Context) {
@@ -26,5 +34,5 @@ func main() {
 			"remote":  c.Request.RemoteAddr,
 		})
 	})
-	router.Run(*listen)
+	router.Run(fmt.Sprintf(":%s", listen))
 }
