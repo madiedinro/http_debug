@@ -3,7 +3,7 @@ dist: trusty
 
 env:
   global:
-  - PROJECT_NAME=http_debug
+  - PROJECT_NAME=http-debug
   - ORG=rockstat
   - IMAGE_NAME=$ORG/$PROJECT_NAME
 
