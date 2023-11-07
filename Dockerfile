@@ -6,6 +6,7 @@ ENV GOPATH=/go
 
 COPY . .
 
+RUN go env -w GO111MODULE=off
 RUN go build -ldflags '-extldflags "-static"' github.com/madiedinro/http_debug
 
 FROM alpine:latest
@@ -16,4 +17,4 @@ COPY --from=builder /go/src/github.com/madiedinro/http_debug/http_debug /usr/bin
 
 ENV GIN_MODE=release
 
-CMD ["http_debug"]
+CMD ["/usr/bin/http_debug"]

@@ -1,6 +1,9 @@
 build:
 	docker build -t madiedinro/httpd_debug .
 
+buildx_amd64:
+	docker buildx build --platform linux/amd64 -t madiedinro/httpd_debug .
+
 build_linux:
 	env GOOS=linux GOARCH=amd64 go build
 
